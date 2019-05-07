@@ -1,6 +1,8 @@
 String buildNumber = env.BUILD_NUMBER;
 String timestamp = new Date().format('yyyyMMddHHmmss');
 String projectName = env.JOB_NAME.split(/\//)[0];
+// e.g awesome-project/release/RELEASE-1.0.0
+String branchName = env.JOB_NAME.split(/\//)[1..-1].join(/\//);
 
 println("${buildNumber} ${timestamp} ${projectName}");
 
@@ -9,22 +11,16 @@ String version = "${buildNumber}-${timestamp}-${projectName}";
 node {
     checkout scm;
 
-    def buildType = parameterOrDefault(defaultValue: 'Init', parameter: 'BuildType');
-
-    if(buildType=='Deploy') {
+    if(params.BuildType=='Rollback') {
         return deploy()
-    } else {
+    } else if(params.BuildType=='Normal'){
         return normalCIBuild(version)
+    } else if(branchName == 'master'){
+        setScmPollStrategyAndBuildTypes(['Normal', 'Rollback']);
     }
 }
 
 def normalCIBuild(String version) {
-    setScmPollStrategyAndBuildTypes(['Normal', 'DeployTest']);
-
-    if ('Init' == parameterOrDefault(defaultValue: 'Init', parameter: 'BuildType')) {
-        return;
-    }
-
     stage('test')
 
     sh('./mvnw test')
