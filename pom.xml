@@ -98,7 +98,7 @@
             <plugin>
                 <!-- for unit test -->
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>2.22.1</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*IntegrationTest</exclude>
