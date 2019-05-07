@@ -51,7 +51,7 @@ def setScmPollStrategyAndBuildTypes(List buildTypes) {
 }
 
 def rollback() {
-    def dockerRegistryHost = "http://47.103.59.183:5000";
+    def dockerRegistryHost = "http://47.103.56.219:5000";
     def getAllTagsUri = "/v2/xdml-springboot/tags/list";
 
     def responseJson = new URL("${dockerRegistryHost}${getAllTagsUri}")
