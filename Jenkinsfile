@@ -70,5 +70,5 @@ def rollback() {
             parameters: [choice(choices: versionsStr, description: 'version', name: 'version')])
 
     println rollbackVersion
-    deploy(rollbackVersion)
+    deployVersion(rollbackVersion)
 }
