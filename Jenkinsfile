@@ -21,13 +21,13 @@ node {
 }
 
 def normalCIBuild(String version) {
-    stage('test')
+    stage('test & package')
 
-    sh('./mvnw clean test')
+    sh('./mvnw clean package')
 
-    stage('package')
+    stage('docker build')
 
-    sh("./mvnw package && docker build . -t 47.103.59.183:5000/xdml-springboot:${version}")
+    sh("./mvnw  && docker build . -t 47.103.59.183:5000/xdml-springboot:${version}")
 
     //stage('deploy')
 
