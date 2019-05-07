@@ -27,7 +27,7 @@ def normalCIBuild(String version) {
 
     stage('docker build')
 
-    sh("./mvnw  && docker build . -t 47.103.59.183:5000/xdml-springboot:${version}")
+    sh("docker build . -t 47.103.59.183:5000/xdml-springboot:${version}")
 
     //stage('deploy')
 
