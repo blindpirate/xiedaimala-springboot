@@ -12,7 +12,7 @@ node {
     checkout scm;
 
     if(params.BuildType=='Rollback') {
-        return deploy()
+        return rollback()
     } else if(params.BuildType=='Normal'){
         return normalCIBuild(version)
     } else if(branchName == 'master'){
@@ -29,12 +29,17 @@ def normalCIBuild(String version) {
 
     sh("docker build . -t 47.103.59.183:5000/xdml-springboot:${version}")
 
-    //stage('deploy')
+    sh("docker push")
 
-    //input 'deploy?'
+    stage('deploy')
+
+    input 'deploy?'
+
+    deployVersion(version)
 }
 
-def deployVersion() {
+def deployVersion(String version) {
+
 }
 
 def setScmPollStrategyAndBuildTypes(List buildTypes) {
@@ -45,5 +50,25 @@ def setScmPollStrategyAndBuildTypes(List buildTypes) {
     properties(propertiesArray);
 }
 
-def deploy() {
+def rollback() {
+    def dockerRegistryHost = "http://47.103.59.183:5000";
+    def getAllTagsUri = "/v2/xdml-springboot/tags/list";
+
+    def responseJson = new URL("${dockerRegistryHost}${getAllTagsUri}")
+            .getText(requestProperties: ['Content-Type': "application/json"]);
+
+    println(responseJson)
+
+    // {name:xxx,tags:[tag1,tag2,...]}
+    Map response = new groovy.json.JsonSlurperClassic().parseText(responseJson) as Map;
+
+    def versionsStr = response.tags.join('\n');
+
+    def rollbackVersion = input(
+            message: 'Select a version to rollback',
+            ok: 'OK',
+            parameters: [choice(choices: versionsStr, description: 'version', name: 'version')])
+
+    println rollbackVersion
+    deploy(rollbackVersion)
 }
