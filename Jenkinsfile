@@ -39,7 +39,6 @@ def normalCIBuild(String version) {
 }
 
 def deployVersion(String version) {
-
 }
 
 def setScmPollStrategyAndBuildTypes(List buildTypes) {
