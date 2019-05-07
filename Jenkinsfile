@@ -23,7 +23,7 @@ node {
 def normalCIBuild(String version) {
     stage('test')
 
-    sh('./mvnw clean test')
+    sh('./mvnw test')
 
     stage('package')
 
