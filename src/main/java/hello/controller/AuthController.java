@@ -1,5 +1,6 @@
 package hello.controller;
 
+import hello.entity.LoginResult;
 import hello.entity.Result;
 import hello.entity.User;
 import hello.service.UserService;
@@ -34,15 +35,15 @@ public class AuthController {
 
     @GetMapping("/auth")
     @ResponseBody
-    public Object auth() {
+    public Result auth() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User loggedInUser = userService.getUserByUsername(authentication == null ? null : authentication.getName());
 
         if (loggedInUser == null) {
-            return new Result("ok", "用户没有登录", false);
+            return LoginResult.success("用户没有登录", false);
         } else {
-            return new Result("ok", null, true, loggedInUser);
+            return LoginResult.success(null, true, loggedInUser);
         }
     }
 
@@ -54,10 +55,10 @@ public class AuthController {
         User loggedInUser = userService.getUserByUsername(userName);
 
         if (loggedInUser == null) {
-            return Result.failure("用户没有登录");
+            return LoginResult.failure("用户没有登录");
         } else {
             SecurityContextHolder.clearContext();
-            return new Result("ok", "success", false);
+            return LoginResult.success("success", false);
         }
     }
 
@@ -82,7 +83,7 @@ public class AuthController {
             e.printStackTrace();
             return Result.failure("user already exists");
         }
-        return new Result("ok", "success!", false);
+        return LoginResult.success("success!", false);
     }
 
     @PostMapping("/auth/login")
@@ -106,7 +107,7 @@ public class AuthController {
             //   Cookie
             SecurityContextHolder.getContext().setAuthentication(token);
 
-            return new Result("ok", "登录成功", true,
+            return LoginResult.success("登录成功", true,
                     userService.getUserByUsername(username));
         } catch (BadCredentialsException e) {
             return Result.failure("密码不正确");
