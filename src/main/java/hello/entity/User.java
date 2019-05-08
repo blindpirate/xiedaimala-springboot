@@ -17,7 +17,7 @@ public class User {
         this.id = id;
         this.username = username;
         this.encryptedPassword = encryptedPassword;
-        this.avatar = "";
+        this.avatar = "https://blog-server.hunger-valley.com/avatar/69.jpg";
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
     }

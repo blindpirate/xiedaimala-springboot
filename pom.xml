@@ -75,6 +75,11 @@
             <artifactId>byte-buddy</artifactId>
             <version>1.9.12</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
