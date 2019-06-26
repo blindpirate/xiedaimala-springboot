@@ -1,5 +1,7 @@
 # 饥人谷 - 多人在线博客平台
 
+[![Build Status](https://travis-ci.org/blindpirate/xiedaimala-springboot.svg?branch=master)](https://travis-ci.org/blindpirate/xiedaimala-springboot)
+
 这是[饥人谷的课程 - 多人在线博客平台](https://xiedaimala.com/courses/77e47726-196c-4dc6-a3ee-18caaa277e8e#/common)的一个样例实现。
 
 - 前端代码：https://github.com/jirengu-inc/vue-blog-preview
