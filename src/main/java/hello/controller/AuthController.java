@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
@@ -76,7 +77,12 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     @ResponseBody
-    public LoginResult login(@RequestBody Map<String, Object> usernameAndPassword) {
+    public Object login(@RequestBody Map<String, Object> usernameAndPassword, HttpServletRequest request) {
+        if (request.getHeader("user-agent") == null || !request.getHeader("user-agent").contains("Mozilla")) {
+            return "死爬虫去死吧";
+        }
+
+
         String username = usernameAndPassword.get("username").toString();
         String password = usernameAndPassword.get("password").toString();
 
