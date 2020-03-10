@@ -22,7 +22,7 @@
         ON blog.user_id = user.id
         where
         <if test="user_id != null">
-            WHERE blog.user_id = #{user_id} and
+            blog.user_id = #{user_id} and
         </if>
         blog.at_index = #{atIndex}
         order by blog.updated_at desc

@@ -31,6 +31,7 @@ public class BlogService {
 
             return BlogListResult.success(blogs, count, page, pageCount);
         } catch (Exception e) {
+            e.printStackTrace();
             return BlogListResult.failure("系统异常");
         }
     }
