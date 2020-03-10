@@ -68,6 +68,7 @@ class AuthControllerTest {
         Mockito.when(userService.getUserByUsername("MyUser")).thenReturn(new hello.entity.User(123, "MyUser", bCryptPasswordEncoder.encode("MyPassword")));
 
         MvcResult response = mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36")
                 .content(new ObjectMapper().writeValueAsString(usernamePassword)))
                 .andExpect(status().isOk())
                 .andExpect(result -> Assertions.assertTrue(result.getResponse().getContentAsString().contains("登录成功")))
