@@ -35,12 +35,14 @@ public class BlogController {
 
     @GetMapping("/blog")
     @ResponseBody
-    public BlogListResult getBlogs(@RequestParam("page") Integer page, @RequestParam(value = "userId", required = false) Integer userId) {
+    public BlogListResult getBlogs(@RequestParam("page") Integer page,
+                                   @RequestParam(value = "userId", required = false) Integer userId
+    ,                               @RequestParam(value = "atIndex", required = false)boolean atIndex) {
         if (page == null || page < 0) {
             page = 1;
         }
 
-        return blogService.getBlogs(page, 10, userId);
+        return blogService.getBlogs(page, 10, userId, atIndex);
     }
 
     @GetMapping("/blog/{blogId}")
@@ -51,7 +53,7 @@ public class BlogController {
 
     @PostMapping("/blog")
     @ResponseBody
-    public BlogResult newBlog(@RequestBody Map<String, String> param) {
+    public BlogResult newBlog(@RequestBody Map<String, Object> param) {
         try {
             return authService.getCurrentUser()
                     .map(user -> blogService.insertBlog(fromParam(param, user)))
@@ -63,7 +65,7 @@ public class BlogController {
 
     @PatchMapping("/blog/{blogId}")
     @ResponseBody
-    public BlogResult updateBlog(@PathVariable("blogId") int blogId, @RequestBody Map<String, String> param) {
+    public BlogResult updateBlog(@PathVariable("blogId") int blogId, @RequestBody Map<String, Object> param) {
         try {
             return authService.getCurrentUser()
                     .map(user -> blogService.updateBlog(blogId, fromParam(param, user)))
@@ -85,11 +87,12 @@ public class BlogController {
         }
     }
 
-    private Blog fromParam(Map<String, String> params, User user) {
+    private Blog fromParam(Map<String, Object> params, User user) {
         Blog blog = new Blog();
-        String title = params.get("title");
-        String content = params.get("content");
-        String description = params.get("description");
+        String title = (String) params.get("title");
+        String content = (String) params.get("content");
+        String description = (String) params.get("description");
+        boolean atIndex = (boolean) params.get("atIndex");
 
         AssertUtils.assertTrue(StringUtils.isNotBlank(title) && title.length() < 100, "title is invalid!");
         AssertUtils.assertTrue(StringUtils.isNotBlank(content) && content.length() < 10000, "content is invalid");
@@ -101,6 +104,7 @@ public class BlogController {
         blog.setTitle(title);
         blog.setContent(content);
         blog.setDescription(description);
+        blog.setAtIndex(atIndex);
         blog.setUser(user);
         return blog;
     }
