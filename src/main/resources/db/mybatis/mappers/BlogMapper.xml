@@ -22,6 +22,7 @@
         <if test="user_id != null">
             WHERE blog.user_id = #{user_id}
         </if>
+        order by blog.updated_at desc
         limit ${offset}, #{limit}
     </select>
     <select id="countBlog" resultType="int">
