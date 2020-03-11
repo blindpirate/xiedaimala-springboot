@@ -55,9 +55,9 @@ public class AuthController {
 
     @PostMapping("/auth/register")
     @ResponseBody
-    public LoginResult register(@RequestBody Map<String, String> usernameAndPassword) {
-        String username = usernameAndPassword.get("username");
-        String password = usernameAndPassword.get("password");
+    public LoginResult register(@RequestBody Map<String, Object> usernameAndPassword, HttpServletRequest request) {
+        String username = (String) usernameAndPassword.get("username");
+        String password = (String) usernameAndPassword.get("password");
         if (username == null || password == null) {
             return LoginResult.failure("username/password == null");
         }
@@ -73,6 +73,7 @@ public class AuthController {
         } catch (DuplicateKeyException e) {
             return LoginResult.failure("user already exists");
         }
+        login(usernameAndPassword, request);
         return LoginResult.success("注册成功", userService.getUserByUsername(username));
     }
 
