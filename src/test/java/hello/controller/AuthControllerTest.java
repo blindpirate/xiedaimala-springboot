@@ -64,7 +64,6 @@ class AuthControllerTest {
         usernamePassword.put("username", "MyUser");
         usernamePassword.put("password", "MyPassword");
 
-        Mockito.when(userService.loadUserByUsername("MyUser")).thenReturn(new User("MyUser", bCryptPasswordEncoder.encode("MyPassword"), Collections.emptyList()));
         Mockito.when(userService.getUserByUsername("MyUser")).thenReturn(new hello.entity.User(123, "MyUser", bCryptPasswordEncoder.encode("MyPassword")));
 
         MvcResult response = mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON_UTF8)
