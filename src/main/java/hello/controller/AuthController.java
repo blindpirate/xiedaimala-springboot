@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.Map;
 
 @Controller
@@ -84,18 +85,10 @@ public class AuthController {
             return "死爬虫去死吧";
         }
 
-
         String username = usernameAndPassword.get("username").toString();
         String password = usernameAndPassword.get("password").toString();
 
-        UserDetails userDetails;
-        try {
-            userDetails = userService.loadUserByUsername(username);
-        } catch (UsernameNotFoundException e) {
-            return LoginResult.failure("用户不存在");
-        }
-
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList());
 
         try {
             authenticationManager.authenticate(token);
@@ -104,6 +97,8 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(token);
 
             return LoginResult.success("登录成功", userService.getUserByUsername(username));
+        } catch (UsernameNotFoundException e) {
+            return LoginResult.failure("用户不存在");
         } catch (BadCredentialsException e) {
             return LoginResult.failure("密码不正确");
         }
