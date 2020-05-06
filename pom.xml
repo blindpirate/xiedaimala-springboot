@@ -29,10 +29,11 @@
             <version>2.0.1</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.15</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -195,7 +196,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>5.2.4</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/xdml?useSSL=false&amp;allowPublicKeyRetrieval=true</url>
+                    <url>jdbc:h2:file:./target/test</url>
                     <user>root</user>
                     <password>my-secret-pw</password>
                 </configuration>
@@ -207,7 +208,7 @@
                             <goal>migrate</goal>
                         </goals>
                         <configuration>
-                            <url>jdbc:mysql://localhost:3307/xdml?useSSL=false&amp;allowPublicKeyRetrieval=true</url>
+                            <url>jdbc:h2:file:./target/test</url>
                             <user>root</user>
                             <password>my-secret-pw</password>
                         </configuration>

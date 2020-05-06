@@ -9,3 +9,9 @@
 - 在线预览：https://jirengu-inc.github.io/vue-blog-preview/
 
 能力一般，水平有限，如果发现任何问题请提PR或者issue，谢谢！
+
+
+# 如何启动
+
+- 在项目目录下运行`mvn flyway:migrate`
+- 在IDEA中运行`Application`类
