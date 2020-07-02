@@ -11,6 +11,7 @@
         blog.content as blog_conent,
         blog.updated_at as blog_updated_at,
         blog.created_at as blog_created_at,
+        blog.at_index as blog_at_index,
         user.id as user_id,
         user.username as user_username,
         user.avatar as user_avatar,
@@ -19,9 +20,11 @@
         FROM blog
         LEFT OUTER JOIN user
         ON blog.user_id = user.id
+        where
         <if test="user_id != null">
-            WHERE blog.user_id = #{user_id}
+            blog.user_id = #{user_id} and
         </if>
+        blog.at_index = #{atIndex}
         order by blog.updated_at desc
         limit ${offset}, #{limit}
     </select>
@@ -33,8 +36,8 @@
     </select>
 
     <insert id="insertBlog" parameterType="hello.entity.Blog" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO blog (user_id, title, description, content, created_at, updated_at)
-        VALUES (#{userId}, #{title}, #{description}, #{content}, now(), now())
+        INSERT INTO blog (user_id, title, description, content, at_index, created_at, updated_at)
+        VALUES (#{userId}, #{title}, #{description}, #{content}, #{atIndex}, now(), now())
     </insert>
 
     <update id="updateBlog" parameterType="hello.entity.Blog">
@@ -42,7 +45,8 @@
         SET title       = #{title},
             content     = #{content},
             description = #{description},
-            updated_at  = now()
+            updated_at  = now(),
+            at_Index = #{atIndex}
         WHERE id = #{id}
     </update>
 
@@ -53,6 +57,7 @@
                blog.content     as blog_content,
                blog.updated_at  as blog_updated_at,
                blog.created_at  as blog_created_at,
+               blog.at_index as blog_at_index,
                user.id          as user_id,
                user.username    as user_username,
                user.avatar      as user_avatar,
@@ -75,6 +80,7 @@
         <result property="title" column="blog_title"/>
         <result property="description" column="blog_description"/>
         <result property="content" column="blog_content"/>
+        <result property="atIndex" column="blog_at_index"/>
         <result property="updatedAt" column="blog_updated_at"/>
         <result property="createdAt" column="blog_created_at"/>
         <association property="user" javaType="hello.entity.User">

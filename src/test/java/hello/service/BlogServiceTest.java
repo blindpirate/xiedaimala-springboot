@@ -32,13 +32,13 @@ public class BlogServiceTest {
     @Test
     public void getBlogsFromDb() {
         List<Blog> blogs = Arrays.asList(mock(Blog.class), mock(Blog.class));
-        when(blogDao.getBlogs(1, 2, null)).thenReturn(blogs);
+        when(blogDao.getBlogs(1, 2, null, true)).thenReturn(blogs);
         when(blogDao.count(null)).thenReturn(3);
 
-        BlogListResult result = blogService.getBlogs(1, 2, null);
+        BlogListResult result = blogService.getBlogs(1, 2, null, true);
 
         verify(blogDao).count(null);
-        verify(blogDao).getBlogs(1, 2, null);
+        verify(blogDao).getBlogs(1, 2, null, true);
 
         Assertions.assertEquals(1, result.getPage());
         Assertions.assertEquals(3, result.getTotal());
@@ -48,9 +48,9 @@ public class BlogServiceTest {
 
     @Test
     public void returnFailureWhenExceptionThrown() {
-        when(blogDao.getBlogs(anyInt(), anyInt(), any())).thenThrow(new RuntimeException());
+        when(blogDao.getBlogs(anyInt(), anyInt(), any(), true)).thenThrow(new RuntimeException());
 
-        Result result = blogService.getBlogs(1, 10, null);
+        Result result = blogService.getBlogs(1, 10, null, true);
 
         Assertions.assertEquals("fail", result.getStatus());
         Assertions.assertEquals("系统异常", result.getMsg());
