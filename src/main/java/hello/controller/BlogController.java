@@ -75,7 +75,7 @@ public class BlogController {
 
     @DeleteMapping("/blog/{blogId}")
     @ResponseBody
-    public Result deleteBlog(@PathVariable("blogId") int blogId) {
+    public BlogResult deleteBlog(@PathVariable("blogId") int blogId) {
         try {
             return authService.getCurrentUser()
                     .map(user -> blogService.deleteBlog(blogId, user))
