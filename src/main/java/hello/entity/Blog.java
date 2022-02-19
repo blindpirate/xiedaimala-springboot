@@ -8,6 +8,7 @@ public class Blog {
     private String title;
     private String description;
     private String content;
+    private boolean atIndex;
     private Instant updatedAt;
     private Instant createdAt;
 
@@ -65,6 +66,14 @@ public class Blog {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isAtIndex() {
+        return atIndex;
+    }
+
+    public void setAtIndex(boolean atIndex) {
+        this.atIndex = atIndex;
     }
 
     public Integer getUserId() {
